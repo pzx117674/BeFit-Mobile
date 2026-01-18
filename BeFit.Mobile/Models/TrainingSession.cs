@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BeFit.Mobile.Models;
 
-/// <summary>
-/// Model reprezentujący sesję treningową
-/// </summary>
 public class TrainingSession : IValidatableObject
 {
     [PrimaryKey, AutoIncrement]
@@ -19,9 +16,6 @@ public class TrainingSession : IValidatableObject
     [Display(Name = "Koniec treningu", Description = "Data i czas zakończenia sesji treningowej")]
     public DateTime EndedAt { get; set; } = DateTime.Now.AddHours(1);
 
-    /// <summary>
-    /// Walidacja niestandardowa - sprawdza czy data zakończenia jest późniejsza niż data rozpoczęcia
-    /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (EndedAt <= StartedAt)
@@ -32,15 +26,9 @@ public class TrainingSession : IValidatableObject
         }
     }
 
-    /// <summary>
-    /// Czas trwania sesji
-    /// </summary>
     [Ignore]
     public TimeSpan Duration => EndedAt - StartedAt;
 
-    /// <summary>
-    /// Formatowany opis sesji
-    /// </summary>
     [Ignore]
     public string DisplayText => $"{StartedAt:dd.MM.yyyy HH:mm} - {EndedAt:HH:mm}";
 

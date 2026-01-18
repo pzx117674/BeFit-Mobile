@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BeFit.Mobile.Models;
 
-/// <summary>
-/// Model reprezentujący wykonane ćwiczenie w ramach sesji treningowej
-/// </summary>
 public class TrainingEntry
 {
     [PrimaryKey, AutoIncrement]
@@ -36,16 +33,12 @@ public class TrainingEntry
     [Display(Name = "Liczba powtórzeń w serii", Description = "Ile powtórzeń w każdej serii")]
     public int Repetitions { get; set; } = 1;
 
-    // Navigation properties (not stored in SQLite, populated manually)
     [Ignore]
     public TrainingSession? TrainingSession { get; set; }
 
     [Ignore]
     public ExerciseType? ExerciseType { get; set; }
 
-    /// <summary>
-    /// Formatowany opis wpisu
-    /// </summary>
     [Ignore]
     public string DisplayText => ExerciseType != null 
         ? $"{ExerciseType.Name}: {Sets}x{Repetitions} @ {Weight}kg" 

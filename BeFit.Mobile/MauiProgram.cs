@@ -18,10 +18,8 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        // Register Database Service
         builder.Services.AddSingleton<DatabaseService>();
 
-        // Register ViewModels
         builder.Services.AddTransient<ExerciseTypesViewModel>();
         builder.Services.AddTransient<ExerciseTypeDetailViewModel>();
         builder.Services.AddTransient<TrainingSessionsViewModel>();
@@ -29,7 +27,6 @@ public static class MauiProgram
         builder.Services.AddTransient<TrainingEntriesViewModel>();
         builder.Services.AddTransient<TrainingEntryDetailViewModel>();
 
-        // Register Views
         builder.Services.AddTransient<ExerciseTypesPage>();
         builder.Services.AddTransient<ExerciseTypeDetailPage>();
         builder.Services.AddTransient<TrainingSessionsPage>();

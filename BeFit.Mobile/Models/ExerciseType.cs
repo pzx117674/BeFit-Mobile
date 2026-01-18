@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BeFit.Mobile.Models;
 
-/// <summary>
-/// Model reprezentujący typ ćwiczenia
-/// </summary>
 public class ExerciseType
 {
     [PrimaryKey, AutoIncrement]

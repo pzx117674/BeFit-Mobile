@@ -3,9 +3,6 @@ using SQLite;
 
 namespace BeFit.Mobile.Services;
 
-/// <summary>
-/// Serwis bazodanowy SQLite do przechowywania danych lokalnie
-/// </summary>
 public class DatabaseService
 {
     private SQLiteAsyncConnection? _database;
@@ -16,9 +13,6 @@ public class DatabaseService
         _dbPath = Path.Combine(FileSystem.AppDataDirectory, "befit.db3");
     }
 
-    /// <summary>
-    /// Inicjalizacja połączenia z bazą danych i tworzenie tabel
-    /// </summary>
     private async Task InitAsync()
     {
         if (_database is not null)
@@ -31,29 +25,18 @@ public class DatabaseService
         await _database.CreateTableAsync<TrainingEntry>();
     }
 
-    #region ExerciseType CRUD
-
-    /// <summary>
-    /// Pobiera wszystkie typy ćwiczeń
-    /// </summary>
     public async Task<List<ExerciseType>> GetExerciseTypesAsync()
     {
         await InitAsync();
         return await _database!.Table<ExerciseType>().OrderBy(e => e.Name).ToListAsync();
     }
 
-    /// <summary>
-    /// Pobiera typ ćwiczenia po ID
-    /// </summary>
     public async Task<ExerciseType?> GetExerciseTypeAsync(int id)
     {
         await InitAsync();
         return await _database!.Table<ExerciseType>().FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    /// <summary>
-    /// Zapisuje typ ćwiczenia (dodaje nowy lub aktualizuje istniejący)
-    /// </summary>
     public async Task<int> SaveExerciseTypeAsync(ExerciseType exerciseType)
     {
         await InitAsync();
@@ -63,18 +46,12 @@ public class DatabaseService
             return await _database!.InsertAsync(exerciseType);
     }
 
-    /// <summary>
-    /// Usuwa typ ćwiczenia
-    /// </summary>
     public async Task<int> DeleteExerciseTypeAsync(ExerciseType exerciseType)
     {
         await InitAsync();
         return await _database!.DeleteAsync(exerciseType);
     }
 
-    /// <summary>
-    /// Sprawdza czy typ ćwiczenia jest używany w jakimkolwiek wpisie
-    /// </summary>
     public async Task<bool> IsExerciseTypeInUseAsync(int exerciseTypeId)
     {
         await InitAsync();
@@ -84,31 +61,18 @@ public class DatabaseService
         return count > 0;
     }
 
-    #endregion
-
-    #region TrainingSession CRUD
-
-    /// <summary>
-    /// Pobiera wszystkie sesje treningowe
-    /// </summary>
     public async Task<List<TrainingSession>> GetTrainingSessionsAsync()
     {
         await InitAsync();
         return await _database!.Table<TrainingSession>().OrderByDescending(s => s.StartedAt).ToListAsync();
     }
 
-    /// <summary>
-    /// Pobiera sesję treningową po ID
-    /// </summary>
     public async Task<TrainingSession?> GetTrainingSessionAsync(int id)
     {
         await InitAsync();
         return await _database!.Table<TrainingSession>().FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    /// <summary>
-    /// Zapisuje sesję treningową (dodaje nową lub aktualizuje istniejącą)
-    /// </summary>
     public async Task<int> SaveTrainingSessionAsync(TrainingSession session)
     {
         await InitAsync();
@@ -118,14 +82,10 @@ public class DatabaseService
             return await _database!.InsertAsync(session);
     }
 
-    /// <summary>
-    /// Usuwa sesję treningową wraz z powiązanymi wpisami
-    /// </summary>
     public async Task<int> DeleteTrainingSessionAsync(TrainingSession session)
     {
         await InitAsync();
         
-        // Usuń powiązane wpisy treningowe (cascade delete)
         await _database!.Table<TrainingEntry>()
             .Where(e => e.TrainingSessionId == session.Id)
             .DeleteAsync();
@@ -133,19 +93,11 @@ public class DatabaseService
         return await _database!.DeleteAsync(session);
     }
 
-    #endregion
-
-    #region TrainingEntry CRUD
-
-    /// <summary>
-    /// Pobiera wszystkie wpisy treningowe z danymi powiązanymi
-    /// </summary>
     public async Task<List<TrainingEntry>> GetTrainingEntriesAsync()
     {
         await InitAsync();
         var entries = await _database!.Table<TrainingEntry>().ToListAsync();
         
-        // Ładowanie powiązanych danych
         var exerciseTypes = await GetExerciseTypesAsync();
         var sessions = await GetTrainingSessionsAsync();
         
@@ -158,9 +110,6 @@ public class DatabaseService
         return entries.OrderByDescending(e => e.TrainingSession?.StartedAt).ToList();
     }
 
-    /// <summary>
-    /// Pobiera wpisy treningowe dla danej sesji
-    /// </summary>
     public async Task<List<TrainingEntry>> GetTrainingEntriesForSessionAsync(int sessionId)
     {
         await InitAsync();
@@ -177,9 +126,6 @@ public class DatabaseService
         return entries;
     }
 
-    /// <summary>
-    /// Pobiera wpis treningowy po ID
-    /// </summary>
     public async Task<TrainingEntry?> GetTrainingEntryAsync(int id)
     {
         await InitAsync();
@@ -194,9 +140,6 @@ public class DatabaseService
         return entry;
     }
 
-    /// <summary>
-    /// Zapisuje wpis treningowy (dodaje nowy lub aktualizuje istniejący)
-    /// </summary>
     public async Task<int> SaveTrainingEntryAsync(TrainingEntry entry)
     {
         await InitAsync();
@@ -206,14 +149,9 @@ public class DatabaseService
             return await _database!.InsertAsync(entry);
     }
 
-    /// <summary>
-    /// Usuwa wpis treningowy
-    /// </summary>
     public async Task<int> DeleteTrainingEntryAsync(TrainingEntry entry)
     {
         await InitAsync();
         return await _database!.DeleteAsync(entry);
     }
-
-    #endregion
 }
