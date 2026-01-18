@@ -1,0 +1,60 @@
+@model IEnumerable<BeFit.Models.TrainingEntry>
+
+@{
+    ViewData["Title"] = "Wykonane ćwiczenia";
+}
+
+<h1>Wykonane ćwiczenia</h1>
+
+<p>
+    <a asp-action="Create">Utwórz nowe</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingSession)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExerciseType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sets)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Repetitions)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainingSession!.StartedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExerciseType!.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sets)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Repetitions)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+

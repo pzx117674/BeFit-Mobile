@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeFit", "BeFit\BeFit.csproj", "{6E4E5EFC-4B3F-44DB-BB6C-9FB913298FB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E4E5EFC-4B3F-44DB-BB6C-9FB913298FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E4E5EFC-4B3F-44DB-BB6C-9FB913298FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E4E5EFC-4B3F-44DB-BB6C-9FB913298FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E4E5EFC-4B3F-44DB-BB6C-9FB913298FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {238C4F87-D859-4E54-9BCC-495A7958F36C}
+	EndGlobalSection
+EndGlobal
