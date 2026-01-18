@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BeFit.Mobile.ViewModels"
+             xmlns:models="clr-namespace:BeFit.Mobile.Models"
+             x:Class="BeFit.Mobile.Views.TrainingSessionsPage"
+             x:DataType="viewmodels:TrainingSessionsViewModel"
+             Title="Sesje treningowe">
+
+    <Grid RowDefinitions="*, Auto">
+        <!-- Lista sesji treningowych -->
+        <RefreshView Grid.Row="0"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding LoadTrainingSessionsCommand}">
+            
+            <CollectionView ItemsSource="{Binding TrainingSessions}"
+                            SelectionMode="None"
+                            EmptyView="Brak sesji treningowych. Dodaj pierwszą sesję używając przycisku poniżej.">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TrainingSession">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Usuń"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TrainingSessionsViewModel}}, Path=DeleteTrainingSessionCommand}"
+                                               CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame Margin="10,5" Padding="15" CornerRadius="10" BorderColor="LightGray">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TrainingSessionsViewModel}}, Path=EditTrainingSessionCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                
+                                <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, Auto">
+                                    <Label Grid.Row="0" Grid.Column="0"
+                                           Text="{Binding StartedAt, StringFormat='{0:dddd, dd MMMM yyyy}'}"
+                                           FontSize="16"
+                                           FontAttributes="Bold" />
+                                    <Label Grid.Row="1" Grid.Column="0"
+                                           TextColor="Gray">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{}{0:HH:mm} - {1:HH:mm}">
+                                                <Binding Path="StartedAt" />
+                                                <Binding Path="EndedAt" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                    <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                           Text="›"
+                                           FontSize="24"
+                                           TextColor="Gray"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Przycisk dodawania -->
+        <Button Grid.Row="1"
+                Text="Dodaj sesję treningową"
+                Margin="15"
+                Command="{Binding AddTrainingSessionCommand}"
+                Style="{StaticResource PrimaryButton}" />
+    </Grid>
+</ContentPage>

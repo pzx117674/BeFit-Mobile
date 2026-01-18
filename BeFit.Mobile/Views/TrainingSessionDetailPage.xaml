@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BeFit.Mobile.ViewModels"
+             x:Class="BeFit.Mobile.Views.TrainingSessionDetailPage"
+             x:DataType="viewmodels:TrainingSessionDetailViewModel"
+             Title="{Binding PageTitle}">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="15">
+            
+            <!-- Data rozpoczęcia -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Data rozpoczęcia *" 
+                       FontAttributes="Bold" />
+                <DatePicker Date="{Binding StartDate}" />
+            </VerticalStackLayout>
+
+            <!-- Czas rozpoczęcia -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Godzina rozpoczęcia *" 
+                       FontAttributes="Bold" />
+                <TimePicker Time="{Binding StartTime}" />
+            </VerticalStackLayout>
+
+            <!-- Data zakończenia -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Data zakończenia *" 
+                       FontAttributes="Bold" />
+                <DatePicker Date="{Binding EndDate}" />
+            </VerticalStackLayout>
+
+            <!-- Czas zakończenia -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Godzina zakończenia *" 
+                       FontAttributes="Bold" />
+                <TimePicker Time="{Binding EndTime}" />
+            </VerticalStackLayout>
+
+            <!-- Błąd walidacji -->
+            <Label Text="{Binding DateError}" 
+                   TextColor="Red" 
+                   IsVisible="{Binding DateError, Converter={StaticResource StringNotEmptyConverter}}"
+                   FontSize="12" />
+
+            <Label Text="Data zakończenia musi być późniejsza niż data rozpoczęcia."
+                   TextColor="Gray"
+                   FontSize="12" />
+
+            <!-- Przyciski -->
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,20,0,0">
+                <Button Grid.Column="0"
+                        Text="Anuluj"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="LightGray"
+                        TextColor="Black" />
+                <Button Grid.Column="1"
+                        Text="Zapisz"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+            </Grid>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BeFit.Mobile.ViewModels"
+             xmlns:models="clr-namespace:BeFit.Mobile.Models"
+             x:Class="BeFit.Mobile.Views.ExerciseTypesPage"
+             x:DataType="viewmodels:ExerciseTypesViewModel"
+             Title="Typy ćwiczeń">
+
+    <Grid RowDefinitions="*, Auto">
+        <!-- Lista typów ćwiczeń -->
+        <RefreshView Grid.Row="0"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding LoadExerciseTypesCommand}">
+            
+            <CollectionView ItemsSource="{Binding ExerciseTypes}"
+                            SelectionMode="None"
+                            EmptyView="Brak typów ćwiczeń. Dodaj pierwszy typ ćwiczenia używając przycisku poniżej.">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ExerciseType">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Usuń"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ExerciseTypesViewModel}}, Path=DeleteExerciseTypeCommand}"
+                                               CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame Margin="10,5" Padding="15" CornerRadius="10" BorderColor="LightGray">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ExerciseTypesViewModel}}, Path=EditExerciseTypeCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding Name}"
+                                           FontSize="18"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1"
+                                           Text="›"
+                                           FontSize="24"
+                                           TextColor="Gray"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Przycisk dodawania -->
+        <Button Grid.Row="1"
+                Text="Dodaj typ ćwiczenia"
+                Margin="15"
+                Command="{Binding AddExerciseTypeCommand}"
+                Style="{StaticResource PrimaryButton}" />
+    </Grid>
+</ContentPage>

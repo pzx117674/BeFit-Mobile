@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BeFit.Mobile.ViewModels"
+             x:Class="BeFit.Mobile.Views.ExerciseTypeDetailPage"
+             x:DataType="viewmodels:ExerciseTypeDetailViewModel"
+             Title="{Binding PageTitle}">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="15">
+            
+            <!-- Nazwa ćwiczenia -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Nazwa ćwiczenia *" 
+                       FontAttributes="Bold" />
+                <Entry Text="{Binding Name}" 
+                       Placeholder="Wprowadź nazwę ćwiczenia"
+                       MaxLength="80" />
+                <Label Text="{Binding NameError}" 
+                       TextColor="Red" 
+                       IsVisible="{Binding NameError, Converter={StaticResource StringNotEmptyConverter}}"
+                       FontSize="12" />
+            </VerticalStackLayout>
+
+            <Label Text="Nazwa typu ćwiczenia (np. Wyciskanie sztangi, Przysiady, Martwy ciąg)"
+                   TextColor="Gray"
+                   FontSize="12" />
+
+            <!-- Przyciski -->
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,20,0,0">
+                <Button Grid.Column="0"
+                        Text="Anuluj"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="LightGray"
+                        TextColor="Black" />
+                <Button Grid.Column="1"
+                        Text="Zapisz"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+            </Grid>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

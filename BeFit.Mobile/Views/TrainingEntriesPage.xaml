@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BeFit.Mobile.ViewModels"
+             xmlns:models="clr-namespace:BeFit.Mobile.Models"
+             x:Class="BeFit.Mobile.Views.TrainingEntriesPage"
+             x:DataType="viewmodels:TrainingEntriesViewModel"
+             Title="Wykonane ćwiczenia">
+
+    <Grid RowDefinitions="*, Auto">
+        <!-- Lista wpisów treningowych -->
+        <RefreshView Grid.Row="0"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding LoadTrainingEntriesCommand}">
+            
+            <CollectionView ItemsSource="{Binding TrainingEntries}"
+                            SelectionMode="None"
+                            EmptyView="Brak wpisów treningowych. Najpierw dodaj typ ćwiczenia i sesję treningową, a następnie dodaj wpis używając przycisku poniżej.">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TrainingEntry">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Usuń"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TrainingEntriesViewModel}}, Path=DeleteTrainingEntryCommand}"
+                                               CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame Margin="10,5" Padding="15" CornerRadius="10" BorderColor="LightGray">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TrainingEntriesViewModel}}, Path=EditTrainingEntryCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                
+                                <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto">
+                                    <!-- Typ ćwiczenia -->
+                                    <Label Grid.Row="0" Grid.Column="0"
+                                           Text="{Binding ExerciseType.Name}"
+                                           FontSize="16"
+                                           FontAttributes="Bold" />
+                                    
+                                    <!-- Szczegóły: serie x powtórzenia @ obciążenie -->
+                                    <Label Grid.Row="1" Grid.Column="0">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{}{0} serii × {1} powtórzeń @ {2} kg">
+                                                <Binding Path="Sets" />
+                                                <Binding Path="Repetitions" />
+                                                <Binding Path="Weight" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                    
+                                    <!-- Data sesji -->
+                                    <Label Grid.Row="2" Grid.Column="0"
+                                           Text="{Binding TrainingSession.StartedAt, StringFormat='{0:dd.MM.yyyy HH:mm}'}"
+                                           TextColor="Gray"
+                                           FontSize="12" />
+                                    
+                                    <Label Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                                           Text="›"
+                                           FontSize="24"
+                                           TextColor="Gray"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Przycisk dodawania -->
+        <Button Grid.Row="1"
+                Text="Dodaj wpis treningowy"
+                Margin="15"
+                Command="{Binding AddTrainingEntryCommand}"
+                Style="{StaticResource PrimaryButton}" />
+    </Grid>
+</ContentPage>

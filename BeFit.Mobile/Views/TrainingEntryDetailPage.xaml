@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BeFit.Mobile.ViewModels"
+             xmlns:models="clr-namespace:BeFit.Mobile.Models"
+             x:Class="BeFit.Mobile.Views.TrainingEntryDetailPage"
+             x:DataType="viewmodels:TrainingEntryDetailViewModel"
+             Title="{Binding PageTitle}">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="15">
+            
+            <!-- Sesja treningowa -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Sesja treningowa *" 
+                       FontAttributes="Bold" />
+                <Picker ItemsSource="{Binding TrainingSessions}"
+                        SelectedItem="{Binding SelectedSession}"
+                        ItemDisplayBinding="{Binding DisplayText}"
+                        Title="Wybierz sesję treningową" />
+                <Label Text="{Binding SessionError}" 
+                       TextColor="Red" 
+                       IsVisible="{Binding SessionError, Converter={StaticResource StringNotEmptyConverter}}"
+                       FontSize="12" />
+            </VerticalStackLayout>
+
+            <!-- Typ ćwiczenia -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Typ ćwiczenia *" 
+                       FontAttributes="Bold" />
+                <Picker ItemsSource="{Binding ExerciseTypes}"
+                        SelectedItem="{Binding SelectedExerciseType}"
+                        ItemDisplayBinding="{Binding Name}"
+                        Title="Wybierz typ ćwiczenia" />
+                <Label Text="{Binding ExerciseTypeError}" 
+                       TextColor="Red" 
+                       IsVisible="{Binding ExerciseTypeError, Converter={StaticResource StringNotEmptyConverter}}"
+                       FontSize="12" />
+            </VerticalStackLayout>
+
+            <!-- Obciążenie -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Obciążenie (kg) *" 
+                       FontAttributes="Bold" />
+                <Entry Text="{Binding Weight}" 
+                       Placeholder="0"
+                       Keyboard="Numeric" />
+                <Label Text="{Binding WeightError}" 
+                       TextColor="Red" 
+                       IsVisible="{Binding WeightError, Converter={StaticResource StringNotEmptyConverter}}"
+                       FontSize="12" />
+                <Label Text="Użyte obciążenie w kilogramach (0-1000)"
+                       TextColor="Gray"
+                       FontSize="12" />
+            </VerticalStackLayout>
+
+            <!-- Liczba serii -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Liczba serii *" 
+                       FontAttributes="Bold" />
+                <Entry Text="{Binding Sets}" 
+                       Placeholder="1"
+                       Keyboard="Numeric" />
+                <Label Text="{Binding SetsError}" 
+                       TextColor="Red" 
+                       IsVisible="{Binding SetsError, Converter={StaticResource StringNotEmptyConverter}}"
+                       FontSize="12" />
+                <Label Text="Ile serii zostało wykonanych (1-100)"
+                       TextColor="Gray"
+                       FontSize="12" />
+            </VerticalStackLayout>
+
+            <!-- Liczba powtórzeń -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Liczba powtórzeń w serii *" 
+                       FontAttributes="Bold" />
+                <Entry Text="{Binding Repetitions}" 
+                       Placeholder="1"
+                       Keyboard="Numeric" />
+                <Label Text="{Binding RepetitionsError}" 
+                       TextColor="Red" 
+                       IsVisible="{Binding RepetitionsError, Converter={StaticResource StringNotEmptyConverter}}"
+                       FontSize="12" />
+                <Label Text="Ile powtórzeń w każdej serii (1-100)"
+                       TextColor="Gray"
+                       FontSize="12" />
+            </VerticalStackLayout>
+
+            <!-- Przyciski -->
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,20,0,0">
+                <Button Grid.Column="0"
+                        Text="Anuluj"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="LightGray"
+                        TextColor="Black" />
+                <Button Grid.Column="1"
+                        Text="Zapisz"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+            </Grid>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
